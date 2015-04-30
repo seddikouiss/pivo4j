@@ -4,13 +4,9 @@
 <config>
 	<!-- Data source definitions. -->
 	<datasources>
-		<!-- 
-			You can register any kind of data source which is supported by Olap4J.
-			For a reference of available drivers and connection parameters, please 
-			visit the Olap4J home page :
-
-			http://www.olap4j.org/
-		-->
+		<!-- You can register any kind of data source which is supported by Olap4J. 
+			For a reference of available drivers and connection parameters, please visit 
+			the Olap4J home page : http://www.olap4j.org/ -->
 		<datasource>
 			<name>FoodMart Mondrian</name>
 			<description>FoodMart sample data source.</description>
@@ -19,59 +15,38 @@
 				<url>jdbc:mondrian:</url>
 				<driverClass>mondrian.olap4j.MondrianOlap4jDriver</driverClass>
 
-				<!--
-					You can use several predefined variables to reference well known file 
-					system locations.
+				<!-- You can use several predefined variables to reference well known 
+					file system locations. For example, '${webRoot}' is the 'WEB-INF' directory 
+					of the current web application context. And '${userHome}' refers to the home 
+					directory of the user on whose account the application server is running. 
+					Finally, '${appHome}' referes to the application home directory, which is 
+					defined as '${userHome}.pivot4j' by default. You can also use '${FS}' to 
+					denote the OS specific file separator character. -->
 
-					For example, '${webRoot}' is the 'WEB-INF' directory of the current web 
-					application context.
-
-					And '${userHome}' refers to the home directory of the user on whose 
-					account the application server is running.
-
-					Finally, '${appHome}' referes to the application home directory, which 
-					is defined as '${userHome}.pivot4j' by default.
-
-					You can also use '${FS}' to denote the OS specific file separator character.
-				-->
 				<properties>
-					<property name="Catalog">file:${webRoot}${FS}FoodMart.xml</property>
-					<property name="Jdbc">jdbc:derby:${webRoot}${FS}foodmart</property>
-					<property name="JdbcDrivers">org.apache.derby.jdbc.EmbeddedDriver</property>
-					<property name="JdbcUser">sa</property>
+					<property name="Catalog">file:${webRoot}${FS}cubeTestR5.xml
+					</property>
+					<property name="Jdbc">jdbc:mysql://localhost/cube_st_from_st__db_v2</property>
+					<property name="JdbcDrivers">com.mysql.jdbc.Driver</property>
+					<property name="JdbcUser">root</property>
+					<property name="JdbcPassword">localhostMdp</property>
 				</properties>
 			</connection-info>
 		</datasource>
 
 		<!-- XMLA data source example -->
-		<!-- 
-		<datasource>
-			<name>FoodMart XMLA</name>
-			<description>FoodMart sample data source(XMLA).</description>
-
-			<connection-info>
-				<url>jdbc:xmla:</url>
-				<driverClass>org.olap4j.driver.xmla.XmlaOlap4jDriver</driverClass>
-				<user>somebody</user>
-				<password>secret</password>
-
-				<properties>
-					<property name="Server">http://localhost:8080/mondrian/xmla</property>
-					<property name="Catalog">FoodMart</property>
-				</properties>
-			</connection-info>
-		</datasource>
-		-->
+		<!-- <datasource> <name>FoodMart XMLA</name> <description>FoodMart sample 
+			data source(XMLA).</description> <connection-info> <url>jdbc:xmla:</url> 
+			<driverClass>org.olap4j.driver.xmla.XmlaOlap4jDriver</driverClass> <user>somebody</user> 
+			<password>secret</password> <properties> <property name="Server">http://localhost:8080/mondrian/xmla</property> 
+			<property name="Catalog">FoodMart</property> </properties> </connection-info> 
+			</datasource> -->
 	</datasources>
 
 	<!-- Appearance settings. -->
 	<appearances>
-		<!--
-			You can download more themes from the below site and install them 
-			under the application library directory (i.e. '/WEB-INF/lib') :
-
-			http://www.primefaces.org/themes.html
-		-->
+		<!-- You can download more themes from the below site and install them 
+			under the application library directory (i.e. '/WEB-INF/lib') : http://www.primefaces.org/themes.html -->
 		<ui-theme>
 			<default>redmond</default>
 			<available-themes>
@@ -85,10 +60,7 @@
 			</available-themes>
 		</ui-theme>
 
-		<!--
-			For a complete list of available editor themes, please visit : 
-			http://codemirror.net/demo/theme.html
-		-->
+		<!-- For a complete list of available editor themes, please visit : http://codemirror.net/demo/theme.html -->
 		<editor-theme>eclipse</editor-theme>
 	</appearances>
 
@@ -96,19 +68,15 @@
 		<nonEmpty default="false" />
 	</model>
 
-	<!-- 
-		Default file extension. When blank, files will be saved without 
-		an extension.
-	-->
+	<!-- Default file extension. When blank, files will be saved without an 
+		extension. -->
 	<repository>
 		<extension>pivot4j</extension>
 	</repository>
 
 	<render>
 		<!-- Show all non-internal member properties -->
-		<!-- 
-		<propertyCollector type="non-internal" />
-		-->
+		<!-- <propertyCollector type="non-internal" /> -->
 	</render>
 
 	<!-- Miscellaneous settings used for integration with other systems. -->

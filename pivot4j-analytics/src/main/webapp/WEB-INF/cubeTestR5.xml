@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<Schema name="STSchema">
+	<Cube name="CubeR5">
+		<Table name="order_facts"/>
+		<Dimension name="Counter" foreignKey="id_counter">
+			<Hierarchy hasAll="true" allMemberName="All Counters" primaryKey="counter_id">
+				<Table name="dim_counter"/>
+				<Level name="counter" column="Counter" uniqueMembers="true"/>
+				<Level name="user" column="User" uniqueMembers="true"/>
+			</Hierarchy>
+		</Dimension>
+		<Dimension name="Time" foreignKey="id_time">
+			<Hierarchy hasAll="true" allMemberName="All Times" primaryKey="id_time">
+				<Table name="dim_time"/>
+				<Level name="Year" column="year" uniqueMembers="true"/>
+				<Level name="Month" column="month" uniqueMembers="true"/>
+				<Level name="Day" column="day" uniqueMembers="false"/>
+			</Hierarchy>
+		</Dimension>
+		<Dimension name="Product" foreignKey="id_product">
+			<Hierarchy hasAll="true" allMemberName="All Products" primaryKey="id_product">
+				<Table name="dim_product"/>
+				<Level name="Pruduct" column="pruduct" uniqueMembers="true"/>
+			</Hierarchy>
+		</Dimension>
+		<!--
+		-->
+		<Measure name="total_odrer_price" column="contrat_amount" aggregator="sum" formatString="$ ###,###,###,##0.00"/>
+		<Measure name="Units Orders" column="id" aggregator="count" formatString="Standard"/>
+	</Cube>
+
+</Schema>
