@@ -1,32 +1,123 @@
 <?xml version="1.0"?>
 <Schema name="STSchema">
 	<Cube name="CubeR5">
-		<Table name="order_facts"/>
+		<Table name="order_facts" />
 		<Dimension name="Counter" foreignKey="id_counter">
-			<Hierarchy hasAll="true" allMemberName="All Counters" primaryKey="counter_id">
-				<Table name="dim_counter"/>
-				<Level name="counter" column="Counter" uniqueMembers="true"/>
-				<Level name="user" column="User" uniqueMembers="true"/>
+			<Hierarchy hasAll="true" allMemberName="All Counters"
+				primaryKey="counter_id">
+				<Table name="dim_counter" />
+				<Level name="counter" column="Counter" uniqueMembers="true" />
+				<Level name="user" column="User" uniqueMembers="true" />
 			</Hierarchy>
 		</Dimension>
 		<Dimension name="Time" foreignKey="id_time">
-			<Hierarchy hasAll="true" allMemberName="All Times" primaryKey="id_time">
-				<Table name="dim_time"/>
-				<Level name="Year" column="year" uniqueMembers="true"/>
-				<Level name="Month" column="month" uniqueMembers="true"/>
-				<Level name="Day" column="day" uniqueMembers="false"/>
+			<Hierarchy hasAll="true" allMemberName="All Times"
+				primaryKey="id_time">
+				<Table name="dim_time" />
+				<Level name="Year" column="year" uniqueMembers="true" levelType="TimeYears" type="Numeric"/>
+				<Level name="Month" column="month" uniqueMembers="true" levelType="TimeMonths" type="Numeric" />
+				<Level name="Day" column="day" uniqueMembers="false" levelType="TimeDays" type="Numeric" />
 			</Hierarchy>
 		</Dimension>
 		<Dimension name="Product" foreignKey="id_product">
-			<Hierarchy hasAll="true" allMemberName="All Products" primaryKey="id_product">
-				<Table name="dim_product"/>
-				<Level name="Pruduct" column="pruduct" uniqueMembers="true"/>
+			<Hierarchy hasAll="true" allMemberName="All Products"
+				primaryKey="id_product">
+				<Table name="dim_product" />
+				<Level name="Pruduct" column="pruduct" uniqueMembers="true" />
 			</Hierarchy>
 		</Dimension>
-		<!--
-		-->
-		<Measure name="total_odrer_price" column="contrat_amount" aggregator="sum" formatString="$ ###,###,###,##0.00"/>
-		<Measure name="Units Orders" column="id" aggregator="count" formatString="Standard"/>
+		<!-- -->
+		<Measure name="total_odrer_price" column="contrat_amount"
+			aggregator="sum" formatString="$ ###,###,###,##0.00" />
+		<Measure name="Units Orders" column="id" aggregator="count"
+			formatString="Standard" />
 	</Cube>
+
+
+
+
+
+
+
+
+
+
+
+
+	<Cube name="DW2">
+		<Table name="trade_facts" />
+		<Dimension name="Buyer" foreignKey="id_buyer">
+			<Hierarchy hasAll="true" allMemberName="All Buyers"
+				primaryKey="id_buyer">
+				<Table name="dim_buyer" />
+				<Level name="Counter" column="counter" uniqueMembers="true" />
+				<Level name="Name" column="name" uniqueMembers="true" />
+			</Hierarchy>
+		</Dimension>
+		<Dimension name="Seller" foreignKey="id_seller">
+			<Hierarchy hasAll="true" allMemberName="All Sellers"
+				primaryKey="id_seller">
+				<Table name="dim_seller" />
+				<Level name="Counter" column="counter" uniqueMembers="true" />
+				<Level name="Name" column="name" uniqueMembers="true" />
+			</Hierarchy>
+		</Dimension>
+
+		<Dimension name="Time" foreignKey="id_time">
+			<Hierarchy hasAll="true" allMemberName="All Times"
+				primaryKey="id_time">
+				<Table name="dim_time" />
+				<Level name="Year" column="year" uniqueMembers="true" levelType="TimeYears" type="Numeric"/>
+				<Level name="Month" column="month" uniqueMembers="true" levelType="TimeMonths" type="Numeric" />
+				<Level name="Day" column="day" uniqueMembers="false" levelType="TimeDays" type="Numeric" />
+			</Hierarchy>
+		</Dimension>
+		<Dimension name="Product" foreignKey="id_product">
+			<Hierarchy hasAll="true" allMemberName="All Products"
+				primaryKey="id_product">
+				<Table name="dim_product" />
+				<Level name="Pruduct" column="pruduct" uniqueMembers="true" />
+			</Hierarchy>
+		</Dimension>
+
+		<Dimension name="Maker" foreignKey="id_maker">
+			<Hierarchy hasAll="true" allMemberName="All Makers"
+				primaryKey="id_maker">
+				<Table name="dim_maker" />
+				<Level name="Maker" column="maker" uniqueMembers="true" />
+			</Hierarchy>
+		</Dimension>
+
+		<Dimension name="Taker" foreignKey="id_taker">
+			<Hierarchy hasAll="true" allMemberName="All Takers"
+				primaryKey="id_taker">
+				<Table name="dim_taker" />
+				<Level name="Taker" column="taker" uniqueMembers="true" />
+			</Hierarchy>
+		</Dimension>
+		<Dimension name="Order Buy" foreignKey="id_order_buy">
+			<Hierarchy hasAll="true" allMemberName="All Order Buy"
+				primaryKey="id_order_buy">
+				<Table name="dim_order_buy" />
+				<Level name="Status" column="status" uniqueMembers="true" />
+			</Hierarchy>
+		</Dimension>
+		<Dimension name="Order Sell" foreignKey="id_order_sell">
+			<Hierarchy hasAll="true" allMemberName="All Order Sell"
+				primaryKey="id_order_sell">
+				<Table name="dim_order_sell" />
+				<Level name="Status" column="statut" uniqueMembers="true" />
+			</Hierarchy>
+		</Dimension>
+		<Measure name="Trade Volume" column="trade_volume" aggregator="sum"
+			formatString="$ ###,###,###,##0.00" />
+		<Measure name="Quantity" column="quantity" aggregator="sum"
+			formatString="Standard" />
+		<Measure name="Units Trade" column="id" aggregator="count"
+			formatString="Standard" />
+	</Cube>
+
+
+
 
 </Schema>

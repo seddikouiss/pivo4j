@@ -8,8 +8,8 @@
 			For a reference of available drivers and connection parameters, please visit 
 			the Olap4J home page : http://www.olap4j.org/ -->
 		<datasource>
-			<name>FoodMart Mondrian</name>
-			<description>FoodMart sample data source.</description>
+			<name>CubeR5</name>
+			<description>CubeR5</description>
 
 			<connection-info>
 				<url>jdbc:mondrian:</url>

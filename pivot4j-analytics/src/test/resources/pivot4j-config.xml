@@ -7,7 +7,6 @@
 		<datasource>
 			<name>FoodMart Mondrian</name>
 			<description>FoodMart sample data source.</description>
-
 			<connection-info>
 				<url>jdbc:mondrian:</url>
 				<driverClass>mondrian.olap4j.MondrianOlap4jDriver</driverClass>
