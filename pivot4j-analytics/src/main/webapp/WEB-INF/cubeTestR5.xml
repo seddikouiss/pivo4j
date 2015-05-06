@@ -1,7 +1,35 @@
 <?xml version="1.0"?>
 <Schema name="STSchema">
-	<Cube name="CubeR5">
+
+	<!-- shared dim -->
+	<Dimension name="Time">
+		<Hierarchy hasAll="true" allMemberName="All Times"
+			primaryKey="id_time">
+			<Table name="dim_time" />
+			<Level name="Year" column="year" uniqueMembers="true"
+				levelType="TimeYears" type="Numeric" />
+			<Level name="Month" column="month" uniqueMembers="true"
+				levelType="TimeMonths" type="Numeric" />
+			<Level name="Day" column="day" uniqueMembers="false" levelType="TimeDays"
+				type="Numeric" />
+		</Hierarchy>
+	</Dimension>
+	<Dimension name="Product">
+		<Hierarchy hasAll="true" allMemberName="All Products"
+			primaryKey="id_product">
+			<Table name="dim_product" />
+			<Level name="Pruduct" column="pruduct" uniqueMembers="true" />
+		</Hierarchy>
+	</Dimension>
+	<!-- //shared dim -->
+
+	<!-- Orders Cube -->
+	<Cube name="Orders">
 		<Table name="order_facts" />
+		<DimensionUsage name="Product" source="Product"
+			foreignKey="id_product" />
+		<DimensionUsage name="Time" source="Time"
+			foreignKey="id_time" />
 		<Dimension name="Counter" foreignKey="id_counter">
 			<Hierarchy hasAll="true" allMemberName="All Counters"
 				primaryKey="counter_id">
@@ -10,42 +38,28 @@
 				<Level name="user" column="User" uniqueMembers="true" />
 			</Hierarchy>
 		</Dimension>
-		<Dimension name="Time" foreignKey="id_time">
-			<Hierarchy hasAll="true" allMemberName="All Times"
-				primaryKey="id_time">
-				<Table name="dim_time" />
-				<Level name="Year" column="year" uniqueMembers="true" levelType="TimeYears" type="Numeric"/>
-				<Level name="Month" column="month" uniqueMembers="true" levelType="TimeMonths" type="Numeric" />
-				<Level name="Day" column="day" uniqueMembers="false" levelType="TimeDays" type="Numeric" />
-			</Hierarchy>
-		</Dimension>
-		<Dimension name="Product" foreignKey="id_product">
-			<Hierarchy hasAll="true" allMemberName="All Products"
-				primaryKey="id_product">
-				<Table name="dim_product" />
-				<Level name="Pruduct" column="pruduct" uniqueMembers="true" />
-			</Hierarchy>
-		</Dimension>
 		<!-- -->
-		<Measure name="total_odrer_price" column="contrat_amount"
+		<Measure name="Order Volume" column="contrat_amount"
 			aggregator="sum" formatString="$ ###,###,###,##0.00" />
 		<Measure name="Units Orders" column="id" aggregator="count"
 			formatString="Standard" />
+
+		<Measure name="Units Product" column="id_product" aggregator="distinct-count"
+			formatString="Standard" />
+
+		<CalculatedMember name="% product" dimension="Measures"
+			formula="[Measures].[Units Product] / [Measures].[Units Orders] * 100">
+			<!-- <CalculatedMemberProperty name="FORMAT_STRING" value="#,##0.00 %"/> -->
+		</CalculatedMember>
 	</Cube>
-
-
-
-
-
-
-
-
-
-
-
-
-	<Cube name="DW2">
+	
+	<!-- Trades Cube -->
+	<Cube name="Trades">
 		<Table name="trade_facts" />
+		<DimensionUsage name="Product" source="Product"
+			foreignKey="id_product" />
+		<DimensionUsage name="Time Type" source="Time"
+			foreignKey="id_time" />
 		<Dimension name="Buyer" foreignKey="id_buyer">
 			<Hierarchy hasAll="true" allMemberName="All Buyers"
 				primaryKey="id_buyer">
@@ -62,24 +76,6 @@
 				<Level name="Name" column="name" uniqueMembers="true" />
 			</Hierarchy>
 		</Dimension>
-
-		<Dimension name="Time" foreignKey="id_time">
-			<Hierarchy hasAll="true" allMemberName="All Times"
-				primaryKey="id_time">
-				<Table name="dim_time" />
-				<Level name="Year" column="year" uniqueMembers="true" levelType="TimeYears" type="Numeric"/>
-				<Level name="Month" column="month" uniqueMembers="true" levelType="TimeMonths" type="Numeric" />
-				<Level name="Day" column="day" uniqueMembers="false" levelType="TimeDays" type="Numeric" />
-			</Hierarchy>
-		</Dimension>
-		<Dimension name="Product" foreignKey="id_product">
-			<Hierarchy hasAll="true" allMemberName="All Products"
-				primaryKey="id_product">
-				<Table name="dim_product" />
-				<Level name="Pruduct" column="pruduct" uniqueMembers="true" />
-			</Hierarchy>
-		</Dimension>
-
 		<Dimension name="Maker" foreignKey="id_maker">
 			<Hierarchy hasAll="true" allMemberName="All Makers"
 				primaryKey="id_maker">
@@ -87,7 +83,6 @@
 				<Level name="Maker" column="maker" uniqueMembers="true" />
 			</Hierarchy>
 		</Dimension>
-
 		<Dimension name="Taker" foreignKey="id_taker">
 			<Hierarchy hasAll="true" allMemberName="All Takers"
 				primaryKey="id_taker">
@@ -109,6 +104,7 @@
 				<Level name="Status" column="statut" uniqueMembers="true" />
 			</Hierarchy>
 		</Dimension>
+
 		<Measure name="Trade Volume" column="trade_volume" aggregator="sum"
 			formatString="$ ###,###,###,##0.00" />
 		<Measure name="Quantity" column="quantity" aggregator="sum"
@@ -118,6 +114,20 @@
 	</Cube>
 
 
+
+	<!-- virtual cube -->
+
+	<VirtualCube name="orders and trades">
+		<CubeUsages>
+			<CubeUsage cubeName="Trades" ignoreUnrelatedDimensions="true" />
+			<CubeUsage cubeName="Orders" ignoreUnrelatedDimensions="true"/>
+		</CubeUsages>
+		<VirtualCubeDimension name="Time" />
+		<VirtualCubeDimension name="Product" />
+		<VirtualCubeDimension cubeName="Orders" name="Counter" />
+		<VirtualCubeMeasure cubeName="Trades"
+			name="[Measures].[Units Trade]" />
+	</VirtualCube>
 
 
 </Schema>
