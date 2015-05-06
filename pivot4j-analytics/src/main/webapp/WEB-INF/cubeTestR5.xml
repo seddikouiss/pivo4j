@@ -95,6 +95,7 @@
 				primaryKey="id_order_buy">
 				<Table name="dim_order_buy" />
 				<Level name="Status" column="status" uniqueMembers="true" />
+				<Level name="Order" column="order" uniqueMembers="true" />
 			</Hierarchy>
 		</Dimension>
 		<Dimension name="Order Sell" foreignKey="id_order_sell">
@@ -102,6 +103,7 @@
 				primaryKey="id_order_sell">
 				<Table name="dim_order_sell" />
 				<Level name="Status" column="statut" uniqueMembers="true" />
+				<Level name="Order" column="order" uniqueMembers="true" />
 			</Hierarchy>
 		</Dimension>
 
@@ -109,8 +111,14 @@
 			formatString="$ ###,###,###,##0.00" />
 		<Measure name="Quantity" column="quantity" aggregator="sum"
 			formatString="Standard" />
-		<Measure name="Units Trade" column="id" aggregator="count"
+		<Measure name="Units Trade" column="id" aggregator="distinct-count"
 			formatString="Standard" />
+		<Measure name="Units Orders buy" column="id_order_buy" aggregator="count"
+			formatString="##,##" />
+		<Measure name="Units Orders buy DISTINCT" column="id_order_buy" aggregator="distinct-count"
+			formatString="##,##" />
+		
+		
 	</Cube>
 
 
