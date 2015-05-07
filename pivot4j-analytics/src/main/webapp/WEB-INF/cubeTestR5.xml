@@ -28,8 +28,7 @@
 		<Table name="order_facts" />
 		<DimensionUsage name="Product" source="Product"
 			foreignKey="id_product" />
-		<DimensionUsage name="Time" source="Time"
-			foreignKey="id_time" />
+		<DimensionUsage name="Time" source="Time" foreignKey="id_time" />
 		<Dimension name="Counter" foreignKey="id_counter">
 			<Hierarchy hasAll="true" allMemberName="All Counters"
 				primaryKey="counter_id">
@@ -43,16 +42,20 @@
 			aggregator="sum" formatString="$ ###,###,###,##0.00" />
 		<Measure name="Units Orders" column="id" aggregator="count"
 			formatString="Standard" />
-
-		<Measure name="Units Product" column="id_product" aggregator="distinct-count"
+		<Measure name="Units Trades" column="nb_trade" aggregator="sum"
+			formatString="Standard" />
+			
+		<!-- 
+		<Measure name="Units Product" column="id_product" aggregator="count"
 			formatString="Standard" />
 
 		<CalculatedMember name="% product" dimension="Measures"
 			formula="[Measures].[Units Product] / [Measures].[Units Orders] * 100">
-			<!-- <CalculatedMemberProperty name="FORMAT_STRING" value="#,##0.00 %"/> -->
+				<CalculatedMemberProperty name="FORMAT_STRING" value="#,##0.00 %"/> 
 		</CalculatedMember>
+		-->
 	</Cube>
-	
+
 	<!-- Trades Cube -->
 	<Cube name="Trades">
 		<Table name="trade_facts" />
@@ -113,22 +116,14 @@
 			formatString="Standard" />
 		<Measure name="Units Trade" column="id" aggregator="distinct-count"
 			formatString="Standard" />
-		<Measure name="Units Orders buy" column="id_order_buy" aggregator="count"
-			formatString="##,##" />
-		<Measure name="Units Orders buy DISTINCT" column="id_order_buy" aggregator="distinct-count"
-			formatString="##,##" />
-		
-		
 	</Cube>
 
-
-
-	<!-- virtual cube -->
+	<!-- virtual cube 
 
 	<VirtualCube name="orders and trades">
 		<CubeUsages>
-			<CubeUsage cubeName="Trades" ignoreUnrelatedDimensions="true" />
-			<CubeUsage cubeName="Orders" ignoreUnrelatedDimensions="true"/>
+			<CubeUsage cubeName="Trades" ignoreUnrelatedDimensions="false" />
+			<CubeUsage cubeName="Orders" ignoreUnrelatedDimensions="false" />
 		</CubeUsages>
 		<VirtualCubeDimension name="Time" />
 		<VirtualCubeDimension name="Product" />
@@ -136,6 +131,6 @@
 		<VirtualCubeMeasure cubeName="Trades"
 			name="[Measures].[Units Trade]" />
 	</VirtualCube>
-
+	-->
 
 </Schema>
