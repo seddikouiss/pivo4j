@@ -44,8 +44,26 @@
 				<Level name="side" column="side" uniqueMembers="true" />
 			</Hierarchy>
 		</Dimension>
+		
+		<Dimension name="Aggression" foreignKey="id_aggr">
+			<Hierarchy hasAll="true" allMemberName="All Aggressions"
+				primaryKey="id_aggr">
+				<Table name="dim_aggr" />
+				<Level name="aggression" column="aggression" uniqueMembers="true" />
+			</Hierarchy>
+		</Dimension>
+		
+		<Dimension name="State" foreignKey="id_state">
+			<Hierarchy hasAll="true" allMemberName="All states"
+				primaryKey="id_state">
+				<Table name="dim_state" />
+				<Level name="state" column="state" uniqueMembers="true" />
+			</Hierarchy>
+		</Dimension>
+		
+		
 		<!-- -->
-		<Measure name="Units Orders" column="id" aggregator="count"
+		<Measure name="Units Orders" column="id" aggregator="distinct-count"
 			formatString="Standard" />
 		<Measure name="Order Volume" column="order_volume" aggregator="sum"
 			formatString="$ ###,###,###,##0.00" />
@@ -65,13 +83,15 @@
 			aggregator="avg" formatString="$ ###,###,###,##0.00" />
 		<!-- Pour chaque trade, il y a deux ordres, donc pour avoir le total du 
 			volume de trade on somme la totalité et on div par 2 -->
-		<Measure name="Trade Volume Intermediate" column="trade_volume"
-			aggregator="sum" formatString="$ ###,###,###,##0.00" visible="false" />
+		<Measure name="Trade Volume" column="trade_volume"
+			aggregator="sum" formatString="$ ###,###,###,##0.00" visible="true" />
+		<!--  
 		<CalculatedMember name="Trade Volume" dimension="Measures"
 			formula="[Measures].[Trade Volume Intermediate] / 2">
 			<CalculatedMemberProperty name="FORMAT_STRING"
 				value="$ ###,###,###,##0.00" />
 		</CalculatedMember>
+		-->
 		<!-- *************************** -->
 		<CalculatedMember name="NOT Traded Unit" dimension="Measures"
 			formula="[Measures].[Units Orders] - [Measures].[Units Trades]">
