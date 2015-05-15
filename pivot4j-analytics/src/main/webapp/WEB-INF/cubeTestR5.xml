@@ -62,10 +62,16 @@
 		</Dimension>
 		
 		
-		<!-- -->
-		<Measure name="Units Orders" column="id" aggregator="distinct-count"
+		<!--, id_ord VARCHAR(255), id_trade BIGINT
+		 -->
+<!-- 	stable version	
+			<Measure name="Units Orders" column="id" aggregator="distinct-count"
 			formatString="Standard" />
-		<Measure name="Order Volume" column="order_volume" aggregator="sum"
+ -->	
+ 		<Measure name="Units Orders" column="id_ord" aggregator="distinct-count"
+			formatString="Standard" />
+ 			
+ 		<Measure name="Order Volume" column="order_volume" aggregator="sum"
 			formatString="$ ###,###,###,##0.00" />
 		<Measure name="MIN Order Volume" column="order_volume"
 			aggregator="min" formatString="$ ###,###,###,##0.00" />
@@ -73,9 +79,15 @@
 			aggregator="max" formatString="$ ###,###,###,##0.00" />
 		<Measure name="AVG Order Volume" column="order_volume"
 			aggregator="avg" formatString="$ ###,###,###,##0.00" />
-		<Measure name="Units Trades" column="nb_trade" aggregator="sum"
+			
+<!-- 		stable version		
+			<Measure name="Order Traded Units" column="nb_trade" aggregator="sum"
 			formatString="Standard" />
-		<Measure name="MAX Trade Volume" column="trade_volume"
+ -->	
+ 		<Measure name="Units Trade" column="id_trade" aggregator="distinct-count"
+			formatString="Standard" />
+ 		
+ 		<Measure name="MAX Trade Volume" column="trade_volume"
 			aggregator="max" formatString="$ ###,###,###,##0.00" />
 		<Measure name="MIN Trade Volume" column="trade_volume"
 			aggregator="min" formatString="$ ###,###,###,##0.00" />
@@ -83,7 +95,7 @@
 			aggregator="avg" formatString="$ ###,###,###,##0.00" />
 		<!-- Pour chaque trade, il y a deux ordres, donc pour avoir le total du 
 			volume de trade on somme la totalité et on div par 2 -->
-		<Measure name="Trade Volume" column="trade_volume"
+		<Measure name="Volume Trade" column="trade_volume"
 			aggregator="sum" formatString="$ ###,###,###,##0.00" visible="true" />
 		<!--  
 		<CalculatedMember name="Trade Volume" dimension="Measures"
@@ -93,15 +105,20 @@
 		</CalculatedMember>
 		-->
 		<!-- *************************** -->
-		<CalculatedMember name="NOT Traded Unit" dimension="Measures"
-			formula="[Measures].[Units Orders] - [Measures].[Units Trades]">
+<!-- 		<CalculatedMember name="NOT Traded Unit" dimension="Measures"
+			formula="[Measures].[Units Orders] - [Measures].[Order Traded Units]">
 		</CalculatedMember>
 		<CalculatedMember name="NOT Traded Volume" dimension="Measures"
-			formula="[Measures].[Order Volume] - [Measures].[Trade Volume] ">
+			formula="[Measures].[Order Volume] - [Measures].[Order Traded Volume] ">
 		<CalculatedMemberProperty name="FORMAT_STRING"
 				value="$ ###,###,###,##0.00" />
 		</CalculatedMember>
-		<!-- *************************** -->
+ -->		<!-- *************************** -->
+ 
+ 
+ 
+ 
+ 
 	</Cube>
 
 	<!-- Trades Cube -->
@@ -127,25 +144,10 @@
 				<Level name="Name" column="name" uniqueMembers="true" />
 			</Hierarchy>
 		</Dimension>
-		<Dimension name="Maker" foreignKey="id_maker">
-			<Hierarchy hasAll="true" allMemberName="All Makers"
-				primaryKey="id_maker">
-				<Table name="dim_maker" />
-				<Level name="Maker" column="maker" uniqueMembers="true" />
-			</Hierarchy>
-		</Dimension>
-		<Dimension name="Taker" foreignKey="id_taker">
-			<Hierarchy hasAll="true" allMemberName="All Takers"
-				primaryKey="id_taker">
-				<Table name="dim_taker" />
-				<Level name="Taker" column="taker" uniqueMembers="true" />
-			</Hierarchy>
-		</Dimension>
 		<Dimension name="Order Buy" foreignKey="id_order_buy">
 			<Hierarchy hasAll="true" allMemberName="All Order Buy"
 				primaryKey="id_order_buy">
 				<Table name="dim_order_buy" />
-				<Level name="Status" column="status" uniqueMembers="true" />
 				<Level name="Order" column="order" uniqueMembers="true" />
 			</Hierarchy>
 		</Dimension>
@@ -153,7 +155,6 @@
 			<Hierarchy hasAll="true" allMemberName="All Order Sell"
 				primaryKey="id_order_sell">
 				<Table name="dim_order_sell" />
-				<Level name="Status" column="statut" uniqueMembers="true" />
 				<Level name="Order" column="order" uniqueMembers="true" />
 			</Hierarchy>
 		</Dimension>
